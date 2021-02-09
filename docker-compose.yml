@@ -1,0 +1,35 @@
+version: "3.3"
+services:
+
+    nodejs:
+        build:
+            context: .
+        image: n14
+        networks:
+            - frontend
+            - backend
+        environment:
+            - MYSQL_HOST=root
+            - MYSQL_USER=aiman
+            - MYSQL_PASS=password
+            - MYSQL_DB=mydb
+        volumes:
+            - ${PWD}:/var/www/html/
+        ports:
+            - "8001:8087"
+        container_name: nodejs-app-con
+
+    mysql:
+        image: mysql:8.0
+        networks:
+            - backend
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=aiman
+            - MYSQL_PASSWORD=password
+            - MYSQL_DATABASE=mydb
+        container_name: mysql-con
+ 
+networks:
+  frontend:
+  backend:
