@@ -1,68 +1,64 @@
+
 var mysql = require('mysql');
+var express = require('express');
 
-var con = mysql.createConnection({
-  host: 'localhost',
-  user: 'aiman',
-  password: 'password',
-  database: 'mydb'
-  
+var app = express();
+var final_result = "";
 
-});
+app.get('/',function(req,res){
+   
 
 
-final_result="";
+   var db_details = {
+     host: 'mysql-con',
+     port: '3306',
+     user: 'aiman',
+     password: 'password',
+     database: 'mydb'
+   };
 
-console.log(con)
+   console.log('MySQL Connection config:');
+   console.log(db_details);
 
+   var con = mysql.createConnection(db_details);
 
+   con.connect();
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  con.query("CREATE DATABASE mydb", function (err, result) {
-    if (err) throw err;
-    console.log("Database created");
-  });
+   var sql = "CREATE TABLE customer1 (name VARCHAR(255), address VARCHAR(255))";
+   con.query(sql, function (err, result) {
+     if (err){
 
-  var sql = "CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))";
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("Table created");
-  });
+      var sql = "DROP TABLE customer1";
+      con.query(sql, function (err, result) {
+      //   if (err) throw err;
+      });
 
-  var sql = "INSERT INTO customers (name, address) VALUES ('Company 2', 'Highway 38')";
-  con.query(sql, function (err, result) {
+     }
+     console.log("Table created");
+   });
+
+   var sql = "INSERT INTO customer1 (name, address) VALUES ('Company 6', 'Highway 46')";
+   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("1 record inserted");
   });
 
-  con.query("SELECT * FROM customers", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-    final_result=result;
-    console.log("___________")
-    console.log(final_result);
-  });
+ 
+  con.query('SELECT * FROM customer1', function (error, results) {
+     if (error) throw error;
+     
+     final_result = '';
 
-
-  
-
-});
-
-var express = require('express');
-var app = express();
-
-app.get('/', function(req, res){
-
-    responseStr="";
-    final_result.forEach(function(data){
-        responseStr += data.name + ' : ' +data.address+`<br>`;
+     results.forEach(function(data){
+      final_result += data.name + ' : '+data.address+`<br>`;
         console.log(data);
      });
-  res.send(responseStr);
+
+     res.status(200).send(final_result);
+   });
+    
+   con.end();
 });
 
-app.listen(3000);
 
-
-
+app.listen(8087);
