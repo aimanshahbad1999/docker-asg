@@ -1,5 +1,16 @@
 version: "3.8"
 services:
+
+  nginx:
+    build:
+      context: ./nginx
+    image: ngnix-img
+    container_name: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - nodejs
+
   nodejs:
     build: 
       context: ./app
