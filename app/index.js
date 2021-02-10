@@ -37,7 +37,7 @@ app.get('/',function(req,res){
      console.log("Table created");
    });
 
-   var sql = "INSERT INTO customer1 (name, address) VALUES ('Company 6', 'Highway 46')";
+   var sql = "INSERT INTO customer1 (name, address) VALUES ('Cuelogic ', 'Pune')";
    con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("1 record inserted");
@@ -61,4 +61,9 @@ app.get('/',function(req,res){
 });
 
 
-app.listen(8087);
+app.listen(5000);
+
+
+
+
+
