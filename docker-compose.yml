@@ -24,7 +24,7 @@ services:
       - MYSQL_PASS=password
       - MYSQL_DB=mydb
     volumes:
-      - $PWD:/var/www/html/
+      - ./:/var/www/html/
     ports:
       - "5000:5000"
     container_name: nodejs-con
