@@ -4,17 +4,24 @@ services:
   nginx:
     build:
       context: ./nginx
-    image: ngnix-img
+    image: nginx:img
     container_name: nginx
     ports:
       - "8080:80"
     depends_on:
       - nodejs
+    volumes: 
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - frontend
+      - backend
+  
 
   nodejs:
     build: 
       context: ./app
     image: lemon
+   
     networks:
       - frontend
       - backend
@@ -24,7 +31,7 @@ services:
       - MYSQL_PASS=password
       - MYSQL_DB=mydb
     volumes:
-      - ./:/var/www/html/
+      - $PWD:/var/www/html/
     ports:
       - "5000:5000"
     container_name: nodejs-con
